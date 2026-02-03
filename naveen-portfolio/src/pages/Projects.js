@@ -245,6 +245,16 @@ export default function Projects() {
                   />
                 ) : null,
               )}
+
+              <button
+                type="button"
+                onClick={() =>
+                  window.open(p.github, "_blank", "noopener,noreferrer")
+                }
+                className="github-btn  mt-3 px-3 py-1 text-sm font-medium text-slate-200 bg-cyan-500/25 rounded-md hover:bg-slate-800/70 transition"
+              >
+                GitHub
+              </button>
             </div>
           </article>
         ))}

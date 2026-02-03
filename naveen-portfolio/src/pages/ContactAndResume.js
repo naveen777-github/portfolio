@@ -1,36 +1,23 @@
+import { useEffect, useState } from "react";
+import { FaEnvelope, FaLinkedin, FaGithub } from "react-icons/fa";
+
 import img1 from "../assets/dp.png";
+import resume from "../assets/Naveen_Rayapudi.pdf";
 import "../pages/ContactAndResume.css";
 
-import TiltedCard from "../components/TiltedCard ";
-
+import TiltedCard from "../components/TiltedCard .js";
 import ElectricBorder from "../components/ElectricBorder";
-import resume from "../assets/Naveen_Rayapudi.pdf";
-
-import {
-  FaEnvelope,
-  FaPhone,
-  FaArrowUp,
-  FaLinkedin,
-  FaGithub,
-} from "react-icons/fa";
-import { useState, useEffect } from "react";
-import { color } from "framer-motion";
+import "../components/ElectricBorder.css";
+import "../components/TiltedCard.css";
 
 export default function ContactAndResume() {
-  const [dimensions, setDimensions] = useState({
-    containerHeight: "800px",
-    containerWidth: "570px",
-    imageHeight: "800px",
-    imageWidth: "570px",
-  });
-
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 700) {
         setDimensions({
-          containerHeight: "280px",
-          containerWidth: "280px",
-          imageHeight: "285px",
+          containerHeight: "400px",
+          containerWidth: "285px",
+          imageHeight: "400px",
           imageWidth: "285px",
         });
       } else {
@@ -49,9 +36,36 @@ export default function ContactAndResume() {
     // Add event listener
     window.addEventListener("resize", handleResize);
 
-    // Cleanup
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+  const [dimensions, setDimensions] = useState({
+    containerHeight: "800px",
+    containerWidth: "570px",
+    imageHeight: "800px",
+    imageWidth: "570px",
+  });
+
+  const [result, setResult] = useState("");
+
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    setResult("Sending....");
+    const formData = new FormData(event.target);
+    formData.append("access_key", "1b806654-8e85-4241-a570-97b667a81e83");
+
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      setResult("Form Submitted Successfully");
+      event.target.reset();
+    } else {
+      setResult("Error");
+    }
+  };
 
   return (
     <div className="contact-page">
@@ -81,13 +95,13 @@ export default function ContactAndResume() {
 
         <div className="contact-content-column">
           <h2 className="contact-heading">Contact Me</h2>
+
           <p className="contact-info-text">
-            <strong>Feel free to reach out to me !</strong>
+            <strong>Feel free to reach out to me!</strong>
           </p>
 
           <p className="contact-info-text">
-            <FaEnvelope size={24} color="#38bdf8" />
-            Email:{" "}
+            <FaEnvelope size={24} color="#38bdf8" /> Email:{" "}
             <a
               href="mailto:rayapudinaveen777@gmail.com"
               className="contact-link"
@@ -103,8 +117,7 @@ export default function ContactAndResume() {
               rel="noreferrer"
               className="contact-link"
             >
-              <FaGithub size={26} color="#38bdf8" />
-              GitHub
+              <FaGithub size={26} color="#38bdf8" /> GitHub
             </a>
 
             <a
@@ -113,32 +126,30 @@ export default function ContactAndResume() {
               rel="noreferrer"
               className="contact-link"
             >
-              <FaLinkedin size={24} color="#38bdf8" />
-              LinkedIn{" "}
+              <FaLinkedin size={24} color="#38bdf8" /> LinkedIn
             </a>
           </p>
 
           <div className="download-btn">
             <button
-              onClick={() => window.open(resume, "_blank")}
+              type="button"
+              onClick={() =>
+                window.open(resume, "_blank", "noopener,noreferrer")
+              }
               className="resume-download-btn"
             >
               Download Resume
             </button>
           </div>
 
-          <form
-            onSubmit={handleSubmit}
-            id="get-in-touch"
-            className="contact-form"
-          >
-            {" "}
+          <form onSubmit={onSubmit} id="get-in-touch" className="contact-form">
             <div className="contact-form-title">
               <h2 className="contact-form-heading">
                 <i className="contact-form-icon fas fa-paper-plane"></i> Get In
                 Touch
               </h2>
             </div>
+
             <div className="form-input-group">
               <div className="form-input-wrapper">
                 <i className="form-input-icon fas fa-user"></i>
@@ -152,6 +163,7 @@ export default function ContactAndResume() {
                 />
               </div>
             </div>
+
             <div className="form-input-group">
               <div className="form-input-wrapper">
                 <i className="form-input-icon fas fa-envelope"></i>
@@ -165,6 +177,7 @@ export default function ContactAndResume() {
                 />
               </div>
             </div>
+
             <div className="form-input-group">
               <div className="form-input-wrapper">
                 <i className="form-input-icon fas fa-comment-dots"></i>
@@ -174,13 +187,15 @@ export default function ContactAndResume() {
                   placeholder="Your Message"
                   required
                   className="form-textarea"
-                ></textarea>
+                />
               </div>
             </div>
+
             <button type="submit" className="form-submit-btn">
               <i className="fas fa-paper-plane"></i> Submit Form
             </button>
-            <div id="result" className="form-result"></div>
+
+            <div className="form-result">{result}</div>
           </form>
         </div>
       </div>

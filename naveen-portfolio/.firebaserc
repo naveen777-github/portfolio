@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "naveen-rayapudi-portfolio"
+  },
+  "targets": {
+    "naveen-rayapudi-portfolio": {
+      "hosting": {
+        "portfolio-7777-777": [
+          "portfolio-7777-777"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

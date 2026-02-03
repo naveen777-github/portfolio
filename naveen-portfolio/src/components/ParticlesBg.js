@@ -32,7 +32,7 @@ export default function ParticlesBg() {
             outModes: { default: "out" },
           },
           opacity: {
-            value: 0.5,
+            value: 1,
           },
           size: { value: { min: 1, max: 3 } },
         },

@@ -96,7 +96,8 @@ export default function Home() {
         <motion.div
           className="actions"
           initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false }}
           transition={{ duration: 0.6, delay: 0.35 }}
         >
           <Link className="btn btn-secondary" to="/contact">
@@ -111,8 +112,9 @@ export default function Home() {
         <motion.div
           className="social"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: false }}
+          transition={{ duration: 0.6, delay: 0.2 }}
         >
           <a
             href="https://github.com/naveen777-github"
