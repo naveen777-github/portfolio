@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaEnvelope, FaLinkedin, FaGithub } from "react-icons/fa";
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 
 import img1 from "../assets/dp.png";
 import resume from "../assets/Naveen_Rayapudi.pdf";
@@ -47,23 +48,49 @@ export default function ContactAndResume() {
 
   const [result, setResult] = useState("");
 
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
   const onSubmit = async (event) => {
     event.preventDefault();
-    setResult("Sending....");
-    const formData = new FormData(event.target);
-    formData.append("access_key", "1b806654-8e85-4241-a570-97b667a81e83");
+    setResult("Sending...");
 
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      body: formData,
-    });
+    try {
+      const formData = new FormData(event.target);
 
-    const data = await response.json();
-    if (data.success) {
-      setResult("Form Submitted Successfully");
+      const payload = {
+        name: formData.get("name"),
+        email: formData.get("email"),
+        message: formData.get("message"),
+      };
+
+      const response = await fetch(`${API_URL}/api/messages`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setResult(data?.error || "Failed to send message");
+        return;
+      }
+
+      setResult(
+        <span className="flex items-center align-center justify-center gap-2 text-green-400">
+          <FaCheckCircle className="text-xl" />
+          Message sent successfully!
+        </span>,
+      );
+
       event.target.reset();
-    } else {
-      setResult("Error");
+    } catch (error) {
+      setResult(
+        <span className="flex items-center align-center justify-center gap-2 text-red-400">
+          <FaTimesCircle className="text-xl" />
+          Something went wrong. Please try again.
+        </span>,
+      );
     }
   };
 
@@ -195,7 +222,9 @@ export default function ContactAndResume() {
               <i className="fas fa-paper-plane"></i> Submit Form
             </button>
 
-            <div className="form-result">{result}</div>
+            <div className="form-result align-center justify-center mt-4 text-lg">
+              {result}
+            </div>
           </form>
         </div>
       </div>
