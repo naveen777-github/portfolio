@@ -48,7 +48,7 @@ export default function ContactAndResume() {
 
   const [result, setResult] = useState("");
 
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+  const API_URL = process.env.REACT_APP_API_URL;
 
   const onSubmit = async (event) => {
     event.preventDefault();
